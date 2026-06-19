@@ -1,0 +1,17 @@
+activity,count
+Request For Payment SUBMITTED by EMPLOYEE,7361
+Request For Payment FINAL_APPROVED by SUPERVISOR,6226
+Request Payment,6187
+Payment Handled,6187
+Request For Payment APPROVED by ADMINISTRATION,5362
+Request For Payment APPROVED by BUDGET OWNER,1954
+Request For Payment REJECTED by EMPLOYEE,1074
+Request For Payment REJECTED by ADMINISTRATION,822
+Request For Payment APPROVED by PRE_APPROVER,413
+Request For Payment REJECTED by SUPERVISOR,174
+Request For Payment SAVED by EMPLOYEE,74
+Request For Payment REJECTED by MISSING,66
+Request For Payment REJECTED by PRE_APPROVER,51
+Request For Payment REJECTED by BUDGET OWNER,47
+Request For Payment APPROVED by SUPERVISOR,37
+Request For Payment FINAL_APPROVED by DIRECTOR,37
