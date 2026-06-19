@@ -1,0 +1,2 @@
+total_cases,total_events,avg_duration_days,median_duration_days,p90_duration_days,avg_events_per_case,avg_throughput_per_week,fastest_case_days,slowest_case_days
+6760,36072,11.43,8.07,20.34,5.3,65.0,0.0,238.1

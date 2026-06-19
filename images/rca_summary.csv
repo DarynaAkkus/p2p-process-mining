@@ -1,0 +1,2 @@
+mean_duration_no_rejection_days,mean_duration_with_rejection_days,rejection_delay_factor,correlation_events_vs_duration,slow_case_threshold_days
+10.6,16.1,1.52,0.36,20.3
