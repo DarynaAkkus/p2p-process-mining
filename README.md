@@ -38,6 +38,8 @@ This analysis uses a real, open, anonymized event log:
 5. Calculates workload by resource type (human staff vs. automated system)
 6. Calculates the frequency of each step — the most frequent, repetitive steps
    are the strongest RPA candidates
+7. Estimates the annual time and cost savings from automating the top RPA
+   candidate step
 
 ## Results
 
@@ -96,6 +98,40 @@ Rejection decision, Final Approved by Director) are left to humans, since
 they require evaluating the actual content of the request rather than a
 formal check.
 
+## Estimated ROI of automating the top candidate
+
+![ROI Chart](images/roi_chart.png)
+
+To make the business case concrete, here is a back-of-the-envelope ROI
+estimate for automating the **"Approved by Administration"** step — the
+highest-volume, most repetitive, rule-based step in the process.
+
+**Assumptions** (stated explicitly, as in a real BA estimate — adjust as
+needed for an actual engagement):
+
+| Assumption | Value |
+|---|---|
+| Manual review time per case | 4 minutes |
+| Fully-loaded staff cost | €18/hour |
+| Robot runtime per case | 20 seconds |
+| Annual case volume | 5,362 (observed in the log) |
+
+**Result:**
+
+| Metric | Value |
+|---|---|
+| Manual hours per year | 357.5 h |
+| Manual cost per year | ~€6,434 |
+| Robot hours per year | 29.8 h |
+| **Hours saved per year** | **~327.7 h** |
+| **Estimated annual savings** | **~€6,434** |
+
+This is a single-step estimate, deliberately kept simple and transparent.
+A full RPA business case would also account for bot license/maintenance
+cost, implementation effort, and the reduced cost of downstream rework from
+fewer rejections — all of which would make the real-world savings even
+larger than this conservative estimate.
+
 ## Repository Structure
 
 ```
@@ -106,9 +142,11 @@ p2p-process-mining/
 ├── images/
 │   ├── process_map.png            # process map diagram
 │   ├── bottleneck_chart.png       # bottleneck chart
+│   ├── roi_chart.png              # ROI chart (manual vs. automated hours)
 │   ├── step_durations.csv         # step duration table
 │   ├── resource_stats.csv         # resource workload
-│   └── activity_frequency.csv     # step frequency
+│   ├── activity_frequency.csv     # step frequency
+│   └── roi_estimate.csv           # ROI calculation details
 └── README.md
 ```
 

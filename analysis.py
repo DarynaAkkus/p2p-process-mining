@@ -123,4 +123,65 @@ print(resource_stats.head(5))
 activity_freq = df["activity"].value_counts()
 activity_freq.to_csv("images/activity_frequency.csv")
 
+# ---------------------------------------------------------------
+# 7. ROI estimate for automating the top RPA candidate
+# ---------------------------------------------------------------
+print("Computing ROI estimate...")
+
+# --- Assumptions (clearly stated, can be adjusted for a real engagement) ---
+MANUAL_MINUTES_PER_REVIEW = 4       # avg. time a human spends on one
+                                     # "Approved by Administration" check
+HOURLY_COST_EUR = 18                # fully loaded cost of an SSC/BPO admin
+                                     # staff member (salary + overhead)
+ROBOT_RUNTIME_SECONDS = 20          # avg. time a bot takes for the same
+                                     # rule-based check
+ANNUALIZATION_FACTOR = 1.0          # the log covers ~1 year of cases already,
+                                     # so no scaling needed here
+
+target_activity = "Request For Payment APPROVED by ADMINISTRATION"
+n_occurrences = int((df["activity"] == target_activity).sum())
+
+manual_hours_per_year = n_occurrences * MANUAL_MINUTES_PER_REVIEW / 60
+manual_cost_per_year = manual_hours_per_year * HOURLY_COST_EUR
+
+robot_hours_per_year = n_occurrences * ROBOT_RUNTIME_SECONDS / 3600
+# Approximate robot run cost as negligible compared to license/maintenance;
+# we instead report hours saved, which is the metric BPO clients care about.
+
+hours_saved_per_year = manual_hours_per_year - robot_hours_per_year
+cost_saved_per_year = manual_cost_per_year  # staff time freed up, not
+                                             # spent on RPA infrastructure
+
+roi_summary = pd.DataFrame([{
+    "activity": target_activity,
+    "annual_occurrences": n_occurrences,
+    "manual_minutes_per_case": MANUAL_MINUTES_PER_REVIEW,
+    "hourly_cost_eur": HOURLY_COST_EUR,
+    "manual_hours_per_year": round(manual_hours_per_year, 1),
+    "manual_cost_per_year_eur": round(manual_cost_per_year, 0),
+    "robot_hours_per_year": round(robot_hours_per_year, 1),
+    "hours_saved_per_year": round(hours_saved_per_year, 1),
+    "estimated_annual_savings_eur": round(cost_saved_per_year, 0),
+}])
+roi_summary.to_csv("images/roi_estimate.csv", index=False)
+print(roi_summary.T)
+
+# ROI bar chart
+fig, ax = plt.subplots(figsize=(6, 4))
+bars = ax.bar(
+    ["Manual process", "After RPA"],
+    [manual_hours_per_year, robot_hours_per_year],
+    color=["#c0392b", "#27ae60"],
+)
+ax.set_ylabel("Hours per year")
+ax.set_title('Time spent on "Approved by Administration" step')
+for bar in bars:
+    height = bar.get_height()
+    ax.annotate(f"{height:.0f}h", xy=(bar.get_x() + bar.get_width() / 2, height),
+                xytext=(0, 5), textcoords="offset points", ha="center")
+plt.tight_layout()
+plt.savefig("images/roi_chart.png", dpi=150)
+plt.close()
+print("Saved images/roi_chart.png")
+
 print("\nDone. All results saved in images/ folder.")
